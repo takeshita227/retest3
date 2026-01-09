@@ -1,0 +1,3 @@
+Sub ShowMessage()
+   MsgBox "Hello World!", vbInformation, "タイトル"
+End Sub
