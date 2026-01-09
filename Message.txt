@@ -1,37 +1,63 @@
-Sub ShowMessage()
+Sub MessageTool()
+    Dim menu As String
     Dim userText As String
     Dim result As String
-    Dim ws As Worksheet
-    Dim nextRow As Long
 
-    ' 入力ボックス
+    ' --- メニュー表示 ---
+    menu = InputBox( _
+        "番号を選んでください" & vbCrLf & _
+        "1: メッセージを入力して表示" & vbCrLf & _
+        "2: メッセージを逆順に変換" & vbCrLf & _
+        "3: メッセージを大文字に変換" & vbCrLf & _
+        "4: メッセージの文字数を表示" & vbCrLf & _
+        "5: ログを保存して表示", _
+        "多機能メッセージツール")
+
+    If menu = "" Then Exit Sub
+
+    ' --- 入力 ---
     userText = InputBox("メッセージを入力してください", "入力")
-
-    ' キャンセル時
     If userText = "" Then
         MsgBox "入力がキャンセルされました", vbExclamation, "中止"
         Exit Sub
     End If
 
-    ' 判定処理
-    If Len(userText) < 5 Then
-        result = "短いメッセージです"
-    ElseIf Len(userText) > 20 Then
-        result = "長いメッセージです"
-    Else
-        result = "ちょうど良い長さです"
-    End If
+    ' --- 機能分岐 ---
+    Select Case menu
+        Case "1"
+            result = "入力内容: " & userText
 
-    ' ログ書き込み（Sheet1 に保存）
+        Case "2"
+            result = "逆順: " & StrReverse(userText)
+
+        Case "3"
+            result = "大文字: " & UCase(userText)
+
+        Case "4"
+            result = "文字数: " & Len(userText) & " 文字"
+
+        Case "5"
+            Call SaveLog(userText)
+            result = "ログに保存しました"
+
+        Case Else
+            MsgBox "無効な番号です", vbCritical, "エラー"
+            Exit Sub
+    End Select
+
+    ' --- 結果表示 ---
+    MsgBox result, vbInformation, "結果"
+End Sub
+
+
+' --- ログ保存用サブルーチン ---
+Sub SaveLog(ByVal text As String)
+    Dim ws As Worksheet
+    Dim nextRow As Long
+
     Set ws = ThisWorkbook.Sheets("Sheet1")
     nextRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row + 1
 
     ws.Cells(nextRow, 1).Value = Now
-    ws.Cells(nextRow, 2).Value = userText
-    ws.Cells(nextRow, 3).Value = result
-
-    ' 結果表示
-    MsgBox "入力内容: " & userText & vbCrLf & _
-           "判定: " & result & vbCrLf & _
-           "ログに保存しました", vbInformation, "結果"
+    ws.Cells(nextRow, 2).Value = text
 End Sub
