@@ -61,3 +61,5 @@ Sub SaveLog(ByVal text As String)
     ws.Cells(nextRow, 1).Value = Now
     ws.Cells(nextRow, 2).Value = text
 End Sub
+
+ありがとう
