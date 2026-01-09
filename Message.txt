@@ -1,15 +1,37 @@
 Sub ShowMessage()
     Dim userText As String
-    
-    ' 入力ボックスを表示
+    Dim result As String
+    Dim ws As Worksheet
+    Dim nextRow As Long
+
+    ' 入力ボックス
     userText = InputBox("メッセージを入力してください", "入力")
 
-    ' キャンセルされた場合は終了
+    ' キャンセル時
     If userText = "" Then
         MsgBox "入力がキャンセルされました", vbExclamation, "中止"
         Exit Sub
     End If
 
-    ' 入力内容を表示
-    MsgBox userText, vbInformation, "あなたのメッセージ"
+    ' 判定処理
+    If Len(userText) < 5 Then
+        result = "短いメッセージです"
+    ElseIf Len(userText) > 20 Then
+        result = "長いメッセージです"
+    Else
+        result = "ちょうど良い長さです"
+    End If
+
+    ' ログ書き込み（Sheet1 に保存）
+    Set ws = ThisWorkbook.Sheets("Sheet1")
+    nextRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row + 1
+
+    ws.Cells(nextRow, 1).Value = Now
+    ws.Cells(nextRow, 2).Value = userText
+    ws.Cells(nextRow, 3).Value = result
+
+    ' 結果表示
+    MsgBox "入力内容: " & userText & vbCrLf & _
+           "判定: " & result & vbCrLf & _
+           "ログに保存しました", vbInformation, "結果"
 End Sub
