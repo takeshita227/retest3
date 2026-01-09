@@ -1,3 +1,15 @@
 Sub ShowMessage()
-   MsgBox "Hello World!", vbInformation, "タイトル"
+    Dim userText As String
+    
+    ' 入力ボックスを表示
+    userText = InputBox("メッセージを入力してください", "入力")
+
+    ' キャンセルされた場合は終了
+    If userText = "" Then
+        MsgBox "入力がキャンセルされました", vbExclamation, "中止"
+        Exit Sub
+    End If
+
+    ' 入力内容を表示
+    MsgBox userText, vbInformation, "あなたのメッセージ"
 End Sub
