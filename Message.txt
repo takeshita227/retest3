@@ -63,3 +63,5 @@ Sub SaveLog(ByVal text As String)
 End Sub
 
 ありがとう
+
+今日は1/12日です
